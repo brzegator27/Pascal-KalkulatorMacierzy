@@ -53,6 +53,7 @@ end;
 //function inicjalizujDG(element : ElementP; m, n : integer; macierz : E) : integer;
 function dodaj(wczesniejszy : ElementP; pozniejszy : ElementP; Nr : integer) : ElementP;
 function usun(element : ElementP) : ElementP;
+function usunW(element : ElementP) : ElementP;
 function szukaj(od : ElementP; Nr : integer) : ElementP;
 function wypisz(od : ElementP) : integer;
 
@@ -133,6 +134,26 @@ begin
        if element^.Nast <> NIL then element^.Nast^.Pop := element^.Pop;
        dispose(element);
   end else Writeln('Blad, element ktory chcesz usunac nie istnieje!!!');
+end;
+
+//Funkcja usuwajaca wszystkieg elementy z listy poczawszy od wskazanego:
+function usunW(element : ElementP) : ElementP;
+//'pomocniczy' - wskaznik pomocniczy:
+var pomocniczy : ElementP;
+begin
+  pomocniczy := element;
+  while pomocniczy <> NIL do
+  begin
+       element := pomocniczy^.Nast;
+       //UWAGA opisy wzgledem obiektu 'element'!!!
+       //Wskaznik z elementu nastepnego zaczyna wskazywac na element poprzedni
+       //Warto zauwazyc, ze nie musimy sprawdzac, czy 'element^.Nast jest rozny od NIL
+       if pomocniczy^.Pop <> NIL then pomocniczy^.Pop^.Nast := pomocniczy^.Nast;
+       //Wskaznik z elementu poprzedniego zaczyna wskazywac na element nastepny
+       if pomocniczy^.Nast <> NIL then pomocniczy^.Nast^.Pop := pomocniczy^.Pop;
+       dispose(pomocniczy);
+       pomocniczy := element;
+  end;
 end;
 
 //Funkcja wyszukujace element z listy o zadanym numerze poczawszy od elementu na ktory wsazuje wskaznik 'od':

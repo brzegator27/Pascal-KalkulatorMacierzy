@@ -119,7 +119,7 @@ begin
 
 end;
 
-//Funkcja usuwajaca element z listy, po elemencie na ktory wsazuje wskaznik 'element':
+//Funkcja usuwajaca element z listy, na ktory wsazuje wskaznik 'element':
 function usun(element : ElementP) : ElementP;
 //'pomocniczy' - wskaznik pomocniczy:
 var pomocniczy : ElementP;

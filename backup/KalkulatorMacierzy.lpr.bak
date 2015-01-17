@@ -11,14 +11,15 @@ begin
 
   while kolejny <> NIL do
   begin
-    Writeln('Nr: ', kolejny^.Nr, '  Wymiary: ', kolejny^.Dane^.M, 'x', kolejny^.Dane^.N);
+    Writeln('Nr: ', kolejny^.Nr, '  Wymiary: ', kolejny^.Dane^.M, ' x ', kolejny^.Dane^.N);
     kolejny := kolejny^.Nast;
+    wypiszListeM := 1;
   end;
 end;
 
 //Funkcja wypisujaca macierz
 //Zmienna 'macierz' wskazuje poczatkowo na element w liscie od ktorego mamy zaczac poszukiwania wlasciwej macierzy
-function wypiszM(macierz : ElementP) : integer;
+function wypiszM(macierz : ElementP) : integer; overload;
 var nr, i, j : integer;
 begin
   Write('Podaj nr macierzy, ktora chcesz wypisac: '); Readln(nr);
@@ -33,8 +34,23 @@ begin
   wypiszM := 1;
 end;
 
+//Funkcja wypisujaca macierz
+//Zmienna 'macierz' jest macierza, ktora chcemy wypisac
+function wypiszM(macierz : ElementP; informacja : integer) : integer; overload;
+var nr, i, j : integer;
+begin
+  //Wypisujemy macierz:
+  for i := 0 to macierz^.Dane^.M - 1 do
+  begin
+    for j := 0 to macierz^.Dane^.N - 1 do write(macierz^.Dane^.Macierz[i][j],' ');
+    Writeln;
+  end;
+
+  wypiszM := 1;
+end;
+
 //Funkcja dodajaca macierz do listy
-function dodajMdoListy(po : ElementP) : ElementP;
+function dodajMdoListy(po : ElementP) : ElementP; overload;
 var m, n, nr, i, j : integer; nowaMacierz : ElementP;
 begin
   //Uzytkownik podaje potrzebne dane macierzy:
@@ -56,7 +72,7 @@ begin
 
   //Wypelniamy nowo utorzona macierz danymi:
   for i := 0 to m - 1 do
-    for j := 0 to n - 1 do nowaMacierz^.Dane^.Macierz[i][j] := (i + j) mod 2;
+    for j := 0 to n - 1 do nowaMacierz^.Dane^.Macierz[i][j] := (i + j);
 
   nowaMacierz^.Dane^.CzyZainicjalizowana := 1;
 
@@ -64,18 +80,184 @@ begin
   dodajMdoListy := nowaMacierz;
 end;
 
+//Funkcja dodajaca do listy 'macierz', po elemencie 'po':
+function dodajMdoListy(po, macierz : ElementP) : ElementP; overload;
+var nr : integer;
+begin
+  //Uzytkownik podaje potrzebne dane macierzy:
+  Write('Podaj nr macierzy: '); Readln(nr);
+
+  //Ustawiamy nr dodawanej macierzy:
+  macierz^.Nr := nr;
+
+  if po <> NIL then
+  begin
+    macierz^.Nast := po^.Nast;
+    macierz^.Pop := po;
+    po^.Nast := macierz;
+  end;
+
+  //Zwracamy wskaznik do elementu listy:
+  dodajMdoListy := macierz;
+end;
+
+//Funkcja dodajaca PUSTA macierz do listy
+function dodajMdoListy(po : ElementP; m, n, nr : integer) : ElementP; overload;
+var i, j : integer; nowaMacierz : ElementP;
+begin
+  //Dodajemy macierz do listy:
+  nowaMacierz := dodaj(po, NIL, nr);
+  nowaMacierz^.Dane^.M := m;
+  nowaMacierz^.Dane^.N := n;
+
+
+  //Tworzymy tablicę wskaźników:
+  SetLength(nowaMacierz^.Dane^.Macierz,m);
+
+  //Tworzymy kolejne tablice wierszy:
+  for i := 0 to m - 1 do SetLength(nowaMacierz^.Dane^.Macierz[i],n);
+
+  //Macierzy nie inicjalizujemy wiec 0
+  nowaMacierz^.Dane^.CzyZainicjalizowana := 0;
+
+  //Zwracamy wskaznik do elementu listy, z nowa macierza:
+  dodajMdoListy := nowaMacierz;
+end;
+
 //Funkcja dodajaca dwie macierze:
-function dodajM(glowa : ElementP) : integer;
-var nr1, nr2, i, j : integer;
+function dodajM(glowa : ElementP) : ElementP;
+var nr, i, j : integer; macierz1, macierz2, macierz3 : ElementP;
 begin
   wypiszListeM(glowa);
-  Write('Podaj nr pierwszej macierzy, ktora chcesz dodac: '); Readln(nr1);
-  //macierz := szukaj(macierz, nr);
-  Write('Podaj nr drugiej macierzy, ktora chcesz dodac: '); Readln(nr2);
-  //macierz := szukaj(macierz, nr);
+  Write('Podaj nr pierwszej macierzy, ktora chcesz dodac: '); Readln(nr);
+  macierz1 := szukaj(glowa, nr);
+  Write('Podaj nr drugiej macierzy, ktora chcesz dodac: '); Readln(nr);
+  macierz2 := szukaj(glowa, nr);
+
+  if (macierz1 = NIL) or (macierz2 = NIL) then
+  begin
+    Writeln('Jedna z macierzy nie istnieje!');
+    exit(NIL);
+  end;
+
+  if (macierz1^.Dane^.M <> macierz2^.Dane^.M) or (macierz1^.Dane^.N <> macierz2^.Dane^.N) then
+  begin
+    dodajM := NIL;
+    Writeln('Blad! Macierze powinny miec takie same wymiary!');
+    dodajM := NIL
+  end else
+  begin
+    //Tworzymy nowa pusta macierz o odpowiednich wymiarach:
+    macierz3 := dodajMdoListy(glowa, macierz1^.Dane^.M, macierz1^.Dane^.N, 1001);
+
+    //Dodajemy macierze
+    for i := 0 to macierz1^.Dane^.M - 1 do
+      for j := 0 to macierz1^.Dane^.N - 1 do macierz3^.Dane^.Macierz[i][j] := macierz1^.Dane^.Macierz[i][j] + macierz2^.Dane^.Macierz[i][j];
+
+    //Wypisujemy powstala macierz:
+    wypiszM(macierz3, 1);
+
+    //Pytamy, czy uzytkownik chce zapisac macierz:
+    Write('Czy chcesz zapisac macierz 1-TAK 0-NIE: '); Readln(nr);
+
+    if nr <> 0 then dodajM := dodajMdoListy(glowa, macierz3)
+    else
+    begin
+      dodajM := NIL;
+      usun(macierz3);
+    end;
+  end;
+end;
+
+//Funkcja mnozaca dwie macierze:
+function pomnozM(glowa : ElementP) : ElementP;
+var nr, i, j, k, pomocnicza : integer; macierz1, macierz2, macierz3 : ElementP;
+begin
+  wypiszListeM(glowa);
+  Write('Podaj nr pierwszej macierzy, ktora chcesz pomnozyc: '); Readln(nr);
+  macierz1 := szukaj(glowa, nr);
+  Write('Podaj nr drugiej macierzy, ktora chcesz pomnozyc: '); Readln(nr);
+  macierz2 := szukaj(glowa, nr);
+
+  if (macierz1 = NIL) or (macierz2 = NIL) then
+  begin
+    Writeln('Jedna z macierzy nie istnieje!');
+    exit(NIL);
+  end;
+
+  if macierz1^.Dane^.N <> macierz2^.Dane^.M then
+  begin
+    pomnozM := NIL;
+    Writeln('Blad! Macierze powinny miec odpowiednie wymiary wymiary!');
+  end else
+  begin
+    //Tworzymy nowa pusta macierz o odpowiednich wymiarach:
+    macierz3 := dodajMdoListy(glowa, macierz1^.Dane^.M, macierz2^.Dane^.N, 1001);
+
+    //Mnozymy macierze macierze
+    for i := 0 to macierz1^.Dane^.M - 1 do
+      for j := 0 to macierz2^.Dane^.N - 1 do
+      begin
+        pomocnicza := 0;
+        for k := 0 to macierz1^.Dane^.N - 1 do pomocnicza := pomocnicza + macierz1^.Dane^.Macierz[i][k] * macierz2^.Dane^.Macierz[k][j];
+        macierz3^.Dane^.Macierz[i][j] := pomocnicza;
+      end;
+
+    //Wypisujemy powstala macierz:
+    wypiszM(macierz3, 1);
+
+    //Pytamy, czy uzytkownik chce zapisac macierz:
+    Write('Czy chcesz zapisac macierz 1-TAK 0-NIE: '); Readln(nr);
+
+    if nr <> 0 then pomnozM := dodajMdoListy(glowa, macierz3)
+    else
+    begin
+      pomnozM := NIL;
+      usun(macierz3);
+    end;
+  end;
 end;
 
 //Funkcja mnozaca macierz przez skalar
+function skalarM(glowa : ElementP) : ElementP;
+var nr, i, j, k, pomocnicza : integer; macierz1, macierz3 : ElementP;
+begin
+  wypiszListeM(glowa);
+  Write('Podaj nr pierwszej macierzy, ktora chcesz pomnozyc przez skalar: '); Readln(nr);
+  macierz1 := szukaj(glowa, nr);
+
+  ////////////////////////////////////////////////////////////////
+  //Od ponizszej linijski 'nr' jest skalarem, by oszczedzac pamiec
+  ///////////////////////////////////////////////////////////////
+  Write('Podaj skalar: '); Readln(nr);
+
+  if macierz1 = NIL then
+  begin
+    Writeln('Podana macierz nie istnieje!');
+    exit(NIL);
+  end;
+
+  //Tworzymy nowa pusta macierz o odpowiednich wymiarach:
+  macierz3 := dodajMdoListy(glowa, macierz1^.Dane^.M, macierz1^.Dane^.N, 1001);
+
+  //Mnozymy macierz przez skalar
+  for i := 0 to macierz1^.Dane^.M - 1 do
+    for j := 0 to macierz1^.Dane^.N - 1 do macierz3^.Dane^.Macierz[i][j] := nr * macierz1^.Dane^.Macierz[i][j];
+
+  //Wypisujemy powstala macierz:
+  wypiszM(macierz3, 1);
+
+  //Pytamy, czy uzytkownik chce zapisac macierz:
+  Write('Czy chcesz zapisac macierz 1-TAK 0-NIE: '); Readln(nr);
+
+  if nr <> 0 then skalarM := dodajMdoListy(glowa, macierz3)
+  else
+  begin
+    skalarM := NIL;
+    usun(macierz3);
+  end;
+
+end;
 
 //Funkcja transponujaca macierz
 
@@ -104,13 +286,14 @@ begin
   //Glowna petla sterujaca:
   while coZrobic <> 0 do
   begin
-    Writeln('Co chcesz zrobic 1-dodaj element; 2-wypisz elementy; 3-dodaj macierze; 4-dodaj elemnt po; 0-koniec;');
+    Writeln('Co chcesz zrobic 1-dodaj element; 2-wypisz elementy; 3-dodaj macierze; 4-pomnoz macierze; 0-koniec;');
     Readln(coZrobic);
 
     case (coZrobic) of
     1: dodajMdoListy(glowa);
     2: wypiszM(glowa);
     3: dodajM(glowa);
+    4: pomnozM(glowa);
     //4: dodaj(szukaj(poczatek, 0), NIL, 0);}
     end;
   end;
