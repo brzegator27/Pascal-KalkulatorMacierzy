@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="C:\3229\lazarus\fpc\2.6.4\bin\x86_64-win64\fpc.exe" Date="1154382550"/>
+  <Params Value=" -MObjFPC -Scghi -O1 -g -gl -vewnhi &quot;-FiC:\Users\User\Documents\Kalkulaor Macierzy\lib\x86_64-win64&quot; &quot;-FuC:\Users\User\Documents\Kalkulaor Macierzy\&quot; &quot;-FUC:\Users\User\Documents\Kalkulaor Macierzy\lib\x86_64-win64\&quot; -l KalkulatorMacierzy.lpr"/>
+</CONFIG>

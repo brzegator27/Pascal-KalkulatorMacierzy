@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="9"/>
+    <BuildModes Active="Default"/>
+    <Units Count="2">
+      <Unit0>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="KalkulatorMacierzy"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="12" Y="14"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="listapodwojniewiazana.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ListaPodwojnieWiazana"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="85"/>
+        <CursorPos X="29" Y="155"/>
+        <FoldState Value=" TLP0C)"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit1>
+    </Units>
+    <General>
+      <ActiveWindowIndexAtStart Value="0"/>
+    </General>
+    <JumpHistory Count="20" HistoryIndex="19">
+      <Position1>
+        <Filename Value="listapodwojniewiazana.pas"/>
+        <Caret Line="69" Column="1" TopLine="1"/>
+      </Position1>
+      <Position2>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="16" Column="16" TopLine="37"/>
+      </Position2>
+      <Position3>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="6" Column="12" TopLine="1"/>
+      </Position3>
+      <Position4>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="17" Column="5" TopLine="1"/>
+      </Position4>
+      <Position5>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="78" Column="7" TopLine="39"/>
+      </Position5>
+      <Position6>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="72" Column="17" TopLine="41"/>
+      </Position6>
+      <Position7>
+        <Filename Value="listapodwojniewiazana.pas"/>
+        <Caret Line="90" Column="18" TopLine="79"/>
+      </Position7>
+      <Position8>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="46" Column="43" TopLine="13"/>
+      </Position8>
+      <Position9>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="32" Column="8" TopLine="9"/>
+      </Position9>
+      <Position10>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="46" Column="8" TopLine="24"/>
+      </Position10>
+      <Position11>
+        <Filename Value="listapodwojniewiazana.pas"/>
+        <Caret Line="115" Column="37" TopLine="76"/>
+      </Position11>
+      <Position12>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="88" Column="17" TopLine="50"/>
+      </Position12>
+      <Position13>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="73" Column="21" TopLine="48"/>
+      </Position13>
+      <Position14>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="107" Column="83" TopLine="72"/>
+      </Position14>
+      <Position15>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="14" Column="103" TopLine="1"/>
+      </Position15>
+      <Position16>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="12" Column="19" TopLine="1"/>
+      </Position16>
+      <Position17>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="19" Column="5" TopLine="1"/>
+      </Position17>
+      <Position18>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="14" Column="19" TopLine="1"/>
+      </Position18>
+      <Position19>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="64" Column="16" TopLine="32"/>
+      </Position19>
+      <Position20>
+        <Filename Value="KalkulatorMacierzy.lpr"/>
+        <Caret Line="74" Column="71" TopLine="49"/>
+      </Position20>
+    </JumpHistory>
+  </ProjectSession>
+  <EditorMacros Count="0"/>
+</CONFIG>
