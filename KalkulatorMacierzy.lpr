@@ -342,6 +342,80 @@ end;
 //Funkcja potegujaca macierz
 
 //Funkcja pobierajaca macierz z pliku
+function wczytajM(glowa : ElementP) : ElementP;
+var i, j, k, nr, poprawnosc : integer; sciezka, linijka : string; plik : text; macierz3 : ElementP;
+begin
+  //Scierzka do pliku, w ktorym jest macierz"
+  sciezka := 'macierze.txt';
+
+  assign(plik, sciezka);
+  reset(plik);
+
+  {ile_r:=1;
+  r:=1;
+  k:=1;}
+
+  while not eof(plik) do
+  begin
+  //Na poczatku pobieramy wymiary macierzy, ktore sa w pierwszej lini pliku:
+  Readln(plik, i, j);
+  Writeln('i: ', i, ' j: ', j);
+
+  //Tworzymy nowa macierz:
+  macierz3 := dodajMdoListy(glowa, i, j, 1001);
+
+  //Ktory wiersz:
+  j := 0;
+
+  while j < macierz3^.Dane^.M do
+  begin
+    //Czytamy linie z pliku:
+    readln(plik, linijka);
+
+    //Ktora kolumna
+    k := 0;
+
+    //Pobieramy kolejne wartosci
+    for i:=1 to length(linijka) do
+    begin
+      if linijka[i] <> ' ' then
+      begin
+        Writeln('j :', j, ' k: ', k);
+        ///////////////////////////////////////////////////////////////////////////////////
+        //Sprawdzic poprawnosc konwersji - zmienna 'poprawnosc'
+        val(linijka[i], macierz3^.Dane^.Macierz[j][k], poprawnosc);
+        k := k + 1;
+        //inc(k);
+      end;
+    end;
+
+    j := j + 1;
+
+  end;
+
+  macierz3^.Dane^.CzyZainicjalizowana := 1;
+
+  wypiszM(macierz3, 1);
+
+  //Pytamy, czy uzytkownik chce zapisac macierz:
+  Write('Czy chcesz zapisac macierz 1-TAK 0-NIE: '); Readln(nr);
+
+  if nr <> 0 then
+  begin
+    wczytajM := macierz3;
+    //Uzytkownik podaje potrzebne dane macierzy:
+    Write('Podaj nr macierzy: '); Readln(nr);
+
+    //Ustawiamy nr dodawanej macierzy:
+    macierz3^.Nr := nr;
+  end
+  else
+  begin
+    wczytajM := NIL;
+    usun(macierz3);
+  end;
+  end;
+end;
 
 var
   //Zmienna przechowujaca decyzje uzytkownika, o tym, co zrobic:
@@ -362,7 +436,7 @@ begin
   //Glowna petla sterujaca:
   while coZrobic <> 0 do
   begin
-    Writeln('Co chcesz zrobic 1-dodaj element; 2-wypisz elementy; 3-dodaj macierze; 4-pomnoz macierze; 5-pomnoz macierz przez skalar; 6-transponuj macierz; 7-wypisz liste; 0-koniec;');
+    Writeln('Co chcesz zrobic 1-dodaj element; 2-wypisz elementy; 3-dodaj macierze; 4-pomnoz macierze; 5-pomnoz macierz przez skalar; 6-transponuj macierz; 7-wypisz liste; 8-wczytaj macierz z pliku; 0-koniec;');
     Readln(coZrobic);
 
     case (coZrobic) of
@@ -373,9 +447,10 @@ begin
     5: skalarM(glowa);
     6: transponujM(glowa);
     7: wypiszListeM(glowa);
+    8: wczytajM(glowa);
     //4: dodaj(szukaj(poczatek, 0), NIL, 0);}
     end;
-    Write('Tutaj3');
+    //Write('Tutaj3');
   end;
 end.
 
