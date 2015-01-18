@@ -23,13 +23,16 @@ function wypiszM(macierz : ElementP) : integer; overload;
 var nr, i, j : integer;
 begin
   Write('Podaj nr macierzy, ktora chcesz wypisac: '); Readln(nr);
+  //Write('Tutaj0');
   macierz := szukaj(macierz, nr);
+  //Write('Tutaj1');
   //Wypisujemy macierz:
   for i := 0 to macierz^.Dane^.M - 1 do
   begin
     for j := 0 to macierz^.Dane^.N - 1 do write(macierz^.Dane^.Macierz[i][j],' ');
     Writeln;
   end;
+  Write('Tutaj2');
 
   wypiszM := 1;
 end;
@@ -92,8 +95,13 @@ begin
 
   if po <> NIL then
   begin
-    macierz^.Nast := po^.Nast;
+    {macierz^.Nast := po^.Nast;
     macierz^.Pop := po;
+    po^.Nast := macierz;}
+
+    macierz^.Pop := po;
+    macierz^.Nast := po^.Nast;
+    if po^.Nast <> NIL then po^.Nast^.Pop := macierz;
     po^.Nast := macierz;
   end;
 
@@ -160,7 +168,15 @@ begin
     //Pytamy, czy uzytkownik chce zapisac macierz:
     Write('Czy chcesz zapisac macierz 1-TAK 0-NIE: '); Readln(nr);
 
-    if nr <> 0 then dodajM := dodajMdoListy(glowa, macierz3)
+    if nr <> 0 then
+    begin
+      dodajM := macierz3;
+      //Uzytkownik podaje potrzebne dane macierzy:
+      Write('Podaj nr macierzy: '); Readln(nr);
+
+      //Ustawiamy nr dodawanej macierzy:
+      macierz3^.Nr := nr;
+    end
     else
     begin
       dodajM := NIL;
@@ -209,7 +225,15 @@ begin
     //Pytamy, czy uzytkownik chce zapisac macierz:
     Write('Czy chcesz zapisac macierz 1-TAK 0-NIE: '); Readln(nr);
 
-    if nr <> 0 then pomnozM := dodajMdoListy(glowa, macierz3)
+    if nr <> 0 then
+    begin
+      pomnozM := macierz3;
+      //Uzytkownik podaje potrzebne dane macierzy:
+      Write('Podaj nr macierzy: '); Readln(nr);
+
+      //Ustawiamy nr dodawanej macierzy:
+      macierz3^.Nr := nr;
+    end
     else
     begin
       pomnozM := NIL;
@@ -250,7 +274,15 @@ begin
   //Pytamy, czy uzytkownik chce zapisac macierz:
   Write('Czy chcesz zapisac macierz 1-TAK 0-NIE: '); Readln(nr);
 
-  if nr <> 0 then skalarM := dodajMdoListy(glowa, macierz3)
+  if nr <> 0 then
+  begin
+    skalarM := macierz3;
+    //Uzytkownik podaje potrzebne dane macierzy:
+    Write('Podaj nr macierzy: '); Readln(nr);
+
+    //Ustawiamy nr dodawanej macierzy:
+    macierz3^.Nr := nr;
+  end
   else
   begin
     skalarM := NIL;
@@ -260,6 +292,50 @@ begin
 end;
 
 //Funkcja transponujaca macierz
+function transponujM(glowa : ElementP) : ElementP;
+var nr, i, j, k, pomocnicza : integer; macierz1, macierz3 : ElementP;
+begin
+  wypiszListeM(glowa);
+  Write('Podaj nr pierwszej macierzy, ktora chcesz transponowac: '); Readln(nr);
+  macierz1 := szukaj(glowa, nr);
+
+  if macierz1 = NIL then
+  begin
+    Writeln('Podana macierz nie istnieje!');
+    exit(NIL);
+  end;
+
+  //Tworzymy nowa pusta macierz o odpowiednich wymiarach:
+  macierz3 := dodajMdoListy(glowa, macierz1^.Dane^.N, macierz1^.Dane^.M, 1001);
+
+  //Mnozymy macierz przez skalar
+  for i := 0 to macierz1^.Dane^.M - 1 do
+    for j := 0 to macierz1^.Dane^.N - 1 do macierz3^.Dane^.Macierz[j][i] := nr * macierz1^.Dane^.Macierz[i][j];
+
+  macierz3^.Dane^.CzyZainicjalizowana := 1;
+
+  //Wypisujemy powstala macierz:
+  wypiszM(macierz3, 1);
+
+  //Pytamy, czy uzytkownik chce zapisac macierz:
+  Write('Czy chcesz zapisac macierz 1-TAK 0-NIE: '); Readln(nr);
+
+  if nr <> 0 then
+  begin
+    transponujM := macierz3;
+    //Uzytkownik podaje potrzebne dane macierzy:
+    Write('Podaj nr macierzy: '); Readln(nr);
+
+    //Ustawiamy nr dodawanej macierzy:
+    macierz3^.Nr := nr;
+  end
+  else
+  begin
+    transponujM := NIL;
+    usun(macierz3);
+  end;
+
+end;
 
 //Funkcja obliczajaca wyznacznik macierzy
 
@@ -286,7 +362,7 @@ begin
   //Glowna petla sterujaca:
   while coZrobic <> 0 do
   begin
-    Writeln('Co chcesz zrobic 1-dodaj element; 2-wypisz elementy; 3-dodaj macierze; 4-pomnoz macierze; 5-pomnoz macierz przez skalar; 0-koniec;');
+    Writeln('Co chcesz zrobic 1-dodaj element; 2-wypisz elementy; 3-dodaj macierze; 4-pomnoz macierze; 5-pomnoz macierz przez skalar; 6-transponuj macierz; 7-wypisz liste; 0-koniec;');
     Readln(coZrobic);
 
     case (coZrobic) of
@@ -295,8 +371,11 @@ begin
     3: dodajM(glowa);
     4: pomnozM(glowa);
     5: skalarM(glowa);
+    6: transponujM(glowa);
+    7: wypiszListeM(glowa);
     //4: dodaj(szukaj(poczatek, 0), NIL, 0);}
     end;
+    Write('Tutaj3');
   end;
 end.
 
