@@ -9,7 +9,7 @@ ElementP = ^Element;
 
 //Typy potrzebne do zapisu macierzy:
 //Wierwsze macierzy:
-Wiersze = array of integer;
+Wiersze = array of double;
 //Tablica na wiersze macierzy:
 WierszeT = array of wiersze;
 
@@ -83,19 +83,22 @@ function dodaj(wczesniejszy : ElementP; pozniejszy : ElementP; Nr : integer) : E
 var newP : ElementP;
 begin
   new(newP);
+  //Writeln('Tutaj01 dodaj');
   //Prosimy uzytkownika o podanie Nr:
   //Write('Podaj numer obiektu ktory ma zostac dodany:');
   //Readln(Nr);
 
   newP^.Nr := Nr;
+  //Writeln('Tutaj02 dodaj');
   new(newP^.Dane);
+  //Writeln('Tutaj03 dodaj');
 
   dodaj := newP;
 
   //Sprawdzamy, czy element 'wczesniejszy' istnieje:
   if wczesniejszy <> NIL then
   begin
-       Writeln('Tutaj1');
+       //Writeln('Tutaj1 dodaj');
        newP^.Pop := wczesniejszy;
        newP^.Nast := wczesniejszy^.Nast;
        if wczesniejszy^.Nast <> NIL then wczesniejszy^.Nast^.Pop := newP;
@@ -103,18 +106,18 @@ begin
   //Jesli wczesniejszy element nie isnieje to sprawdzamy element 'pozniejszy':
   end else if pozniejszy <> NIL then
       begin
-           Writeln('Tutaj2');
+           //Writeln('Tutaj2');
            newP^.Pop := pozniejszy^.Pop;
            newP^.Nast := pozniejszy;
            pozniejszy^.Pop^.Nast := newP;
            pozniejszy^.Pop := newP;
       end else
           begin
-               if newP <> NIL then Writeln('Tutaj3');
+               //if newP <> NIL then Writeln('Tutaj3');
                newP^.Nast := NIL;
                newP^.Pop := NIL;
                wczesniejszy := newP;
-               Writeln('Tutaj4');
+               //Writeln('Tutaj4');
           end;
 
 end;

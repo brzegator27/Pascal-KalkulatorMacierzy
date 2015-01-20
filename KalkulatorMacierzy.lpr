@@ -1,11 +1,12 @@
 program KalkulatorMacierzy;
 
-uses CRT, ListaPodwojnieWiazana;
+uses CRT, ListaPodwojnieWiazana, SysUtils;
 
 //Funkcja wypisujaca liste macierzy
 function wypiszListeM(glowa : ElementP) : integer;
 var kolejny : ElementP;
 begin
+  clrscr();
   //Zaczynamy od elementu, ktory jest zaraz po elemencie bedacym glowa
   kolejny := glowa^.Nast;
 
@@ -22,6 +23,7 @@ end;
 function wypiszM(macierz : ElementP) : integer; overload;
 var nr, i, j : integer;
 begin
+  clrscr();
   Write('Podaj nr macierzy, ktora chcesz wypisac: '); Readln(nr);
   //Write('Tutaj0');
   macierz := szukaj(macierz, nr);
@@ -29,10 +31,10 @@ begin
   //Wypisujemy macierz:
   for i := 0 to macierz^.Dane^.M - 1 do
   begin
-    for j := 0 to macierz^.Dane^.N - 1 do write(macierz^.Dane^.Macierz[i][j],' ');
+    for j := 0 to macierz^.Dane^.N - 1 do write(macierz^.Dane^.Macierz[i][j]:6:2,' ');
     Writeln;
   end;
-  Write('Tutaj2');
+  //Write('Tutaj2 WypiszM');
 
   wypiszM := 1;
 end;
@@ -45,7 +47,7 @@ begin
   //Wypisujemy macierz:
   for i := 0 to macierz^.Dane^.M - 1 do
   begin
-    for j := 0 to macierz^.Dane^.N - 1 do write(macierz^.Dane^.Macierz[i][j],' ');
+    for j := 0 to macierz^.Dane^.N - 1 do write(macierz^.Dane^.Macierz[i][j]:6:2,' ');
     Writeln;
   end;
 
@@ -56,6 +58,7 @@ end;
 function dodajMdoListy(po : ElementP) : ElementP; overload;
 var m, n, nr, i, j : integer; nowaMacierz : ElementP;
 begin
+  clrscr();
   //Uzytkownik podaje potrzebne dane macierzy:
   Write('Podaj wymiar m = '); Readln(m);
   Write('Podaj wymiar n = '); Readln(n);
@@ -113,11 +116,14 @@ end;
 function dodajMdoListy(po : ElementP; m, n, nr : integer) : ElementP; overload;
 var i, j : integer; nowaMacierz : ElementP;
 begin
+  //Writeln('Tutaj1 dodajMdoListy');
   //Dodajemy macierz do listy:
   nowaMacierz := dodaj(po, NIL, nr);
+  //Writeln('Tutaj2 dodajMdoListy');
   nowaMacierz^.Dane^.M := m;
   nowaMacierz^.Dane^.N := n;
 
+  //Writeln('Tutaj3 dodajMdoListy');
 
   //Tworzymy tablicę wskaźników:
   SetLength(nowaMacierz^.Dane^.Macierz,m);
@@ -136,6 +142,7 @@ end;
 function dodajM(glowa : ElementP) : ElementP;
 var nr, i, j : integer; macierz1, macierz2, macierz3 : ElementP;
 begin
+  clrscr();
   wypiszListeM(glowa);
   Write('Podaj nr pierwszej macierzy, ktora chcesz dodac: '); Readln(nr);
   macierz1 := szukaj(glowa, nr);
@@ -187,8 +194,9 @@ end;
 
 //Funkcja mnozaca dwie macierze:
 function pomnozM(glowa : ElementP) : ElementP;
-var nr, i, j, k, pomocnicza : integer; macierz1, macierz2, macierz3 : ElementP;
+var nr, i, j, k : integer; pomocnicza : double; macierz1, macierz2, macierz3 : ElementP;
 begin
+  clrscr();
   wypiszListeM(glowa);
   Write('Podaj nr pierwszej macierzy, ktora chcesz pomnozyc: '); Readln(nr);
   macierz1 := szukaj(glowa, nr);
@@ -246,6 +254,7 @@ end;
 function skalarM(glowa : ElementP) : ElementP;
 var nr, i, j, k, pomocnicza : integer; macierz1, macierz3 : ElementP;
 begin
+  clrscr();
   wypiszListeM(glowa);
   Write('Podaj nr pierwszej macierzy, ktora chcesz pomnozyc przez skalar: '); Readln(nr);
   macierz1 := szukaj(glowa, nr);
@@ -295,6 +304,7 @@ end;
 function transponujM(glowa : ElementP) : ElementP;
 var nr, i, j, k, pomocnicza : integer; macierz1, macierz3 : ElementP;
 begin
+  clrscr();
   wypiszListeM(glowa);
   Write('Podaj nr pierwszej macierzy, ktora chcesz transponowac: '); Readln(nr);
   macierz1 := szukaj(glowa, nr);
@@ -343,8 +353,9 @@ end;
 
 //Funkcja pobierajaca macierz z pliku
 function wczytajM(glowa : ElementP) : ElementP;
-var i, j, k, nr, poprawnosc : integer; sciezka, linijka : string; plik : text; macierz3 : ElementP;
+var i, j, k, l, nr, poprawnosc : integer; sciezka, linijka, wartosc : string; plik : text; macierz3 : ElementP;
 begin
+  clrscr();
   //Scierzka do pliku, w ktorym jest macierz"
   sciezka := 'macierze.txt';
 
@@ -359,10 +370,12 @@ begin
   begin
   //Na poczatku pobieramy wymiary macierzy, ktore sa w pierwszej lini pliku:
   Readln(plik, i, j);
-  Writeln('i: ', i, ' j: ', j);
+  //Writeln('i: ', i, ' j: ', j);
 
   //Tworzymy nowa macierz:
   macierz3 := dodajMdoListy(glowa, i, j, 1001);
+
+  //Writeln('Tutaj1 wczytajM');
 
   //Ktory wiersz:
   j := 0;
@@ -374,16 +387,36 @@ begin
 
     //Ktora kolumna
     k := 0;
+    l := 1;
 
     //Pobieramy kolejne wartosci
     for i:=1 to length(linijka) do
     begin
-      if linijka[i] <> ' ' then
+      if (linijka[i] <> ' ') and (i >= l) then
       begin
-        Writeln('j :', j, ' k: ', k);
+        l := i;
+        while (linijka[l] <> ' ') and (l <= length(linijka)) do
+        begin
+          //insert(linijka[l], wartosc, byte(wartosc[0]);
+          //Write('#', linijka[l], '#');
+          wartosc := wartosc + linijka[l];
+          l := l + 1;
+        end;
+        //wartosc := wartosc + ',1';
+        //Writeln();
+        //i := l + 1;
+        //Writeln('wartosc: ', wartosc, 'j :', j, ' k: ', k);
+        //Writeln('j :', j, ' k: ', k);
+
+
         ///////////////////////////////////////////////////////////////////////////////////
         //Sprawdzic poprawnosc konwersji - zmienna 'poprawnosc'
-        val(linijka[i], macierz3^.Dane^.Macierz[j][k], poprawnosc);
+        //if k < macierz3^.Dane^.N then val(wartosc, macierz3^.Dane^.Macierz[j][k], poprawnosc);
+        if k < macierz3^.Dane^.N then macierz3^.Dane^.Macierz[j][k] := StrToFloat(wartosc);
+
+        wartosc := '';
+        //macierz3^.Dane^.Macierz[j][k] := 1;
+        //Writeln(macierz3^.Dane^.Macierz[j][k]);
         k := k + 1;
         //inc(k);
       end;
@@ -395,6 +428,7 @@ begin
 
   macierz3^.Dane^.CzyZainicjalizowana := 1;
 
+  clrscr();
   wypiszM(macierz3, 1);
 
   //Pytamy, czy uzytkownik chce zapisac macierz:
