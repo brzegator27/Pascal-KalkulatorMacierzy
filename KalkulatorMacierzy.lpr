@@ -320,7 +320,7 @@ begin
 
   //Mnozymy macierz przez skalar
   for i := 0 to macierz1^.Dane^.M - 1 do
-    for j := 0 to macierz1^.Dane^.N - 1 do macierz3^.Dane^.Macierz[j][i] := nr * macierz1^.Dane^.Macierz[i][j];
+    for j := 0 to macierz1^.Dane^.N - 1 do macierz3^.Dane^.Macierz[j][i] := macierz1^.Dane^.Macierz[i][j];
 
   macierz3^.Dane^.CzyZainicjalizowana := 1;
 
@@ -470,6 +470,7 @@ begin
   //Glowna petla sterujaca:
   while coZrobic <> 0 do
   begin
+    Writeln('Wpisz 1, by przejsc do menu... '); readln(coZrobic); clrscr();
     Writeln('Co chcesz zrobic 1-dodaj element; 2-wypisz elementy; 3-dodaj macierze; 4-pomnoz macierze; 5-pomnoz macierz przez skalar; 6-transponuj macierz; 7-wypisz liste; 8-wczytaj macierz z pliku; 0-koniec;');
     Readln(coZrobic);
 

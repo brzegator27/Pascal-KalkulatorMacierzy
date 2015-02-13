@@ -6,6 +6,7 @@ uses CRT, ListaPodwojnieWiazana, SysUtils;
 function wypiszListeM(glowa : ElementP) : integer;
 var kolejny : ElementP;
 begin
+  clrscr();
   //Zaczynamy od elementu, ktory jest zaraz po elemencie bedacym glowa
   kolejny := glowa^.Nast;
 
@@ -22,6 +23,7 @@ end;
 function wypiszM(macierz : ElementP) : integer; overload;
 var nr, i, j : integer;
 begin
+  clrscr();
   Write('Podaj nr macierzy, ktora chcesz wypisac: '); Readln(nr);
   //Write('Tutaj0');
   macierz := szukaj(macierz, nr);
@@ -56,6 +58,7 @@ end;
 function dodajMdoListy(po : ElementP) : ElementP; overload;
 var m, n, nr, i, j : integer; nowaMacierz : ElementP;
 begin
+  clrscr();
   //Uzytkownik podaje potrzebne dane macierzy:
   Write('Podaj wymiar m = '); Readln(m);
   Write('Podaj wymiar n = '); Readln(n);
@@ -139,6 +142,7 @@ end;
 function dodajM(glowa : ElementP) : ElementP;
 var nr, i, j : integer; macierz1, macierz2, macierz3 : ElementP;
 begin
+  clrscr();
   wypiszListeM(glowa);
   Write('Podaj nr pierwszej macierzy, ktora chcesz dodac: '); Readln(nr);
   macierz1 := szukaj(glowa, nr);
@@ -192,6 +196,7 @@ end;
 function pomnozM(glowa : ElementP) : ElementP;
 var nr, i, j, k : integer; pomocnicza : double; macierz1, macierz2, macierz3 : ElementP;
 begin
+  clrscr();
   wypiszListeM(glowa);
   Write('Podaj nr pierwszej macierzy, ktora chcesz pomnozyc: '); Readln(nr);
   macierz1 := szukaj(glowa, nr);
@@ -249,6 +254,7 @@ end;
 function skalarM(glowa : ElementP) : ElementP;
 var nr, i, j, k, pomocnicza : integer; macierz1, macierz3 : ElementP;
 begin
+  clrscr();
   wypiszListeM(glowa);
   Write('Podaj nr pierwszej macierzy, ktora chcesz pomnozyc przez skalar: '); Readln(nr);
   macierz1 := szukaj(glowa, nr);
@@ -298,6 +304,7 @@ end;
 function transponujM(glowa : ElementP) : ElementP;
 var nr, i, j, k, pomocnicza : integer; macierz1, macierz3 : ElementP;
 begin
+  clrscr();
   wypiszListeM(glowa);
   Write('Podaj nr pierwszej macierzy, ktora chcesz transponowac: '); Readln(nr);
   macierz1 := szukaj(glowa, nr);
@@ -313,7 +320,7 @@ begin
 
   //Mnozymy macierz przez skalar
   for i := 0 to macierz1^.Dane^.M - 1 do
-    for j := 0 to macierz1^.Dane^.N - 1 do macierz3^.Dane^.Macierz[j][i] := nr * macierz1^.Dane^.Macierz[i][j];
+    for j := 0 to macierz1^.Dane^.N - 1 do macierz3^.Dane^.Macierz[j][i] := macierz1^.Dane^.Macierz[i][j];
 
   macierz3^.Dane^.CzyZainicjalizowana := 1;
 
@@ -348,6 +355,7 @@ end;
 function wczytajM(glowa : ElementP) : ElementP;
 var i, j, k, l, nr, poprawnosc : integer; sciezka, linijka, wartosc : string; plik : text; macierz3 : ElementP;
 begin
+  clrscr();
   //Scierzka do pliku, w ktorym jest macierz"
   sciezka := 'macierze.txt';
 
@@ -448,6 +456,7 @@ var
   coZrobic : integer;
   //Glowa listy:
   glowa : ElementP;
+  menu : string;
 
 begin
   new(glowa);
@@ -462,7 +471,11 @@ begin
   //Glowna petla sterujaca:
   while coZrobic <> 0 do
   begin
-    Writeln('Co chcesz zrobic 1-dodaj element; 2-wypisz elementy; 3-dodaj macierze; 4-pomnoz macierze; 5-pomnoz macierz przez skalar; 6-transponuj macierz; 7-wypisz liste; 8-wczytaj macierz z pliku; 0-koniec;');
+    Writeln('Wpisz 1, by przejsc do menu... '); readln(coZrobic); clrscr();
+    Writeln('Co chcesz zrobic:');
+    menu := '1-dodaj element;'+#9+' 2-wypisz elementy';
+    Writeln(menu);
+    Writeln('3-dodaj macierze; 4-pomnoz macierze; 5-pomnoz macierz przez skalar; 6-transponuj macierz; 7-wypisz liste; 8-wczytaj macierz z pliku; 0-koniec;');
     Readln(coZrobic);
 
     case (coZrobic) of
